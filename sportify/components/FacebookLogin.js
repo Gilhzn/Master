@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Image, Button } from "react-native";
+import RegUsr from "../services/register_user";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Button,
+  TouchableOpacity
+} from "react-native";
 
 export default class FacebookLogin extends Component {
   state = {
@@ -33,11 +41,13 @@ export default class FacebookLogin extends Component {
       if (type === "success") {
         // Get the user's name using Facebook's Graph API
         const response = await fetch(
-          `https://graph.facebook.com/me?access_token=${token}&fields=id,name,picture.type(large)`
+          `https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,picture.type(large)`
         );
         // TODO: Save user facebook token
         const fbUserInfo = await response.json();
         this.setState({ isRendered: true, fbUserInfo });
+        RegUsr.RegisterFbUser(fbUserInfo);
+
         if (this.props.onLogin != undefined)
           this.props.onLogin("DashboardScreen");
       }
@@ -51,11 +61,9 @@ export default class FacebookLogin extends Component {
       <View style={styles.flexCenter}>
         <View style={styles.fbBtn}>
           <Text style={styles.fbIcon}>f</Text>
-          <Button
-            title="Login with Facebook"
-            color="#fff"
-            onPress={() => this.logIn()}
-          />
+          <TouchableOpacity onPress={() => this.logIn()}>
+            <Text style={styles.fbTxt}>Login with Facebook</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -79,10 +87,17 @@ const styles = StyleSheet.create({
   },
   fbBtn: {
     backgroundColor: "#3b5998",
-    padding: 8,
-    paddingLeft: 26,
-    textAlign: "center",
+    padding: 18,
     borderRadius: 7,
-    margin: 40
+    margin: 40,
+    elevation: 4,
+    shadowOffset: { width: 3, height: 4 },
+    shadowColor: "grey",
+    shadowOpacity: 0.5,
+    shadowRadius: 7
+  },
+  fbTxt: {
+    textAlign: "center",
+    color: "#fff"
   }
 });

@@ -1,49 +1,109 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React from "react";
+import { Image } from "react-native";
+import RegUsr from "./services/register_user";
+// Screens
+import LoginScreen from "./screens/LoginScreen";
+import DashboardScreen from "./screens/DashboardScreen";
+import SettingsScreen from "./screens/SettingsScreen";
+// Tabs
+import CreateEventTab from "./tabs/CreateEventTab";
+import NotificationsTab from "./tabs/NotificationsTab";
+import SearchEventTab from "./tabs/SearchEventTab";
+// Navigation
+import {
+  createSwitchNavigator,
+  createStackNavigator,
+  createAppContainer,
+  createDrawerNavigator,
+  createBottomTabNavigator
+} from "react-navigation";
+import Icon from "@expo/vector-icons/Ionicons";
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends React.Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-    );
+    return <AppContainer />;
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+// Tabs navigator
+const DashboardTabNavigator = createBottomTabNavigator(
+  {
+    CreateEventTab,
+    SearchEventTab,
+    NotificationsTab
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  {
+    initialRouteName: "CreateEventTab"
+  }
+
+  // {
+  //   navigationOptions: ({ navigation }) => {
+  //     const { routeName } = navigation.state.routes[navigation.state.index];
+  //     return {
+  //       headerTitle: routeName
+  //     };
+  //   }
+  // }
+);
+
+// TopStackNavigtor
+const DashboardStackNavigator = createStackNavigator(
+  {
+    DashboardTabNavigator: DashboardTabNavigator
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  {
+    defaultNavigationOptions: ({ navigation }) => {
+      const { name, email, picture } = RegUsr.GetFbUser();
+      return {
+        headerLeft: (
+          <Icon
+            style={{ paddingLeft: 10 }}
+            onPress={() => navigation.openDrawer()}
+            name="md-menu"
+            size={30}
+          />
+        ),
+        headerRight: (
+          <Image
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 50 / 2,
+              marginRight: 10,
+              marginTop: 10,
+              borderWidth: 1,
+              borderColor: "blue"
+            }}
+            source={{ uri: picture }}
+          />
+        )
+      };
+    }
+  }
+);
+
+// Drawer/Humburger navigator
+const AppDrawerNavigator = createDrawerNavigator({
+  DashboardScreen: {
+    screen: DashboardStackNavigator,
+    navigationOptions: ({ navigation }) => {
+      return {
+        title: "Dashboard"
+      };
+    }
+  }
 });
+
+// Navigation Screens
+const AppSwitchNavigator = createSwitchNavigator(
+  {
+    LoginScreen: LoginScreen,
+    DashboardScreen: {
+      screen: AppDrawerNavigator
+    }
+  }
+  //Remove this after Dev ends
+  // { initialRouteName: "DashboardScreen" }
+);
+
+const AppContainer = createAppContainer(AppSwitchNavigator);

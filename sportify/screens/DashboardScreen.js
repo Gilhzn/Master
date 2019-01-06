@@ -1,18 +1,11 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 
-class HomeScreen extends Component {
-  static navigationOptions = {
-    title: "Home!"
-  };
+class DashboardScreen extends Component {
   state = {};
   render() {
-    return (
-      <View>
-        <Text>Home Screen</Text>
-      </View>
-    );
+    return <View />;
   }
 }
 
-export default HomeScreen;
+export default DashboardScreen;
