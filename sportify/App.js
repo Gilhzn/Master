@@ -55,6 +55,9 @@ const DashboardStackNavigator = createStackNavigator(
     defaultNavigationOptions: ({ navigation }) => {
       const { name, email, picture } = RegUsr.GetFbUser();
       return {
+        headerStyle: {
+          height: 60
+        },
         headerLeft: (
           <Icon
             style={{ paddingLeft: 10 }}
@@ -70,7 +73,7 @@ const DashboardStackNavigator = createStackNavigator(
               height: 50,
               borderRadius: 50 / 2,
               marginRight: 10,
-              marginTop: 10,
+              marginBottom: 10,
               borderWidth: 1,
               borderColor: "blue"
             }}

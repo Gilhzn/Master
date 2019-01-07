@@ -3,11 +3,10 @@ const RegisterFbUser = props => {
     name,
     email,
     picture: {
-      data: { url }
+      data: { url: picture }
     }
   } = props;
-
-  facebookUser.push({ name, email, picture: url });
+  facebookUser.push({ name, email, picture });
 };
 
 const GetFbUser = () => {

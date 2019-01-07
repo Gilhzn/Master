@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19005,
+  "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 17228,
+  "packagerPid": 17836,
   "expoServerNgrokUrl": "https://i9-3mb.anonymous.sportify.exp.direct",
   "packagerNgrokUrl": "https://packager.i9-3mb.anonymous.sportify.exp.direct",
-  "ngrokPid": 248
+  "ngrokPid": 20484
 }
